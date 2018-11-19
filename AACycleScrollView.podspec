@@ -13,7 +13,7 @@ s.authors            = { "Aaron Feng" => "e2shao1993@163.com" }
 
 s.swift_version = "4.2"
 
-s.ios.deployment_target = "7.0"
+s.ios.deployment_target = "8.0"
 
 s.source       = { :git => "https://github.com/Fxxxxxx/AACycleScrollView.git", :tag => s.version }
 
@@ -21,5 +21,6 @@ s.source_files  = "AACycleScrollView/*.swift"
 
 s.requires_arc = true
 s.framework = "UIKit"
+s.dependency   'Kingfisher'
 
 end

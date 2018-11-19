@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 public class AACycleScrollView: UIView {
 

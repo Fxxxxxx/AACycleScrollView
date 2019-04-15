@@ -20,10 +20,24 @@ public class AACycleScrollView: UIView {
     */
     
     public weak var delegate: AACycleScrollViewDelegate?
-    public var imagesUrlStringGroup = [String]()
-    public var imagesNameStringGroup = [String]()
+    public var imagesUrlStringGroup = [String]() {
+        didSet {
+            reloadData()
+        }
+    }
+    public var imagesNameStringGroup = [String]() {
+        didSet {
+            reloadData()
+        }
+    }
+    private var totalCount = 0
     public let pageControl = UIPageControl()
-    public var pageControlOffset : UIOffset?
+    public var pageControlOffset : UIOffset? {
+        didSet {
+            pageControl.center.x += pageControlOffset!.horizontal
+            pageControl.center.y += pageControlOffset!.vertical
+        }
+    }
     public var bannerImageViewContentMode = ContentMode.scaleAspectFill
     public var placeHolderImage: UIImage?
     public var autoScrollTimeInterval: TimeInterval = 2.0
@@ -62,19 +76,18 @@ public class AACycleScrollView: UIView {
         mainView.dataSource = self
         mainView.delegate = self
         mainView.isPagingEnabled = true
+        mainView.backgroundColor = .white
         mainView.register(AABannerCell.self, forCellWithReuseIdentifier: "Banner")
         mainView.showsVerticalScrollIndicator = false
         mainView.showsHorizontalScrollIndicator = false
         self.addSubview(mainView)
         
-        pageControl.frame = CGRect.init(x: 0, y: self.bounds.height - 30, width: self.bounds.size.width, height: 30)
-        if pageControlOffset != nil {
-            pageControl.center.x += pageControlOffset!.horizontal
-            pageControl.center.y += pageControlOffset!.vertical
-        }
         pageControl.currentPage = 0
-        pageControl.numberOfPages = collectionView(mainView, numberOfItemsInSection: 0)
+        pageControl.numberOfPages = imagesNameStringGroup.count > 0 ? imagesNameStringGroup.count : imagesUrlStringGroup.count
         self.addSubview(pageControl)
+        pageControl.sizeToFit()
+        pageControl.center = CGPoint.init(x: self.bounds.width / 2, y: self.bounds.height - 15)
+        
         setTimer()
         
         NotificationCenter.default.addObserver(self, selector: #selector(invalidateTimer), name: UIApplication.willResignActiveNotification, object: nil)
@@ -97,8 +110,19 @@ public class AACycleScrollView: UIView {
     public func reloadData() {
         
         mainView.reloadData()
-        pageControl.numberOfPages = self.collectionView(mainView, numberOfItemsInSection: 0)
-        pageControl.currentPage = currentIndex()
+        totalCount = imagesNameStringGroup.count > 0 ? imagesNameStringGroup.count : imagesUrlStringGroup.count
+        guard totalCount > 1 else {
+            mainView.isScrollEnabled = false
+            pageControl.isHidden = true
+            invalidateTimer()
+            return
+        }
+        mainView.isScrollEnabled = true
+        pageControl.isHidden = false
+        setTimer()
+        pageControl.numberOfPages = totalCount
+        mainView.scrollToItem(at: IndexPath.init(item: 1, section: 0), at: .left, animated: false)
+        pageControl.currentPage = 0
         
     }
     
@@ -110,12 +134,11 @@ public class AACycleScrollView: UIView {
         }
         var nextIndex = currentIndex() + 1
         nextIndex %= total
-        mainView.selectItem(at: IndexPath.init(item: nextIndex, section: 0), animated: nextIndex != 0, scrollPosition: .left)
-        pageControl.currentPage = nextIndex
+        mainView.scrollToItem(at: IndexPath.init(item: nextIndex, section: 0), at: .left, animated: true)
         
     }
     
-    func currentIndex() -> Int {
+    private func currentIndex() -> Int {
         
         return Int(mainView.contentOffset.x / self.bounds.size.width + 0.3)
         
@@ -136,24 +159,32 @@ public class AACycleScrollView: UIView {
 extension AACycleScrollView: UICollectionViewDataSource, UICollectionViewDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imagesNameStringGroup.count > 0 ? imagesNameStringGroup.count : imagesUrlStringGroup.count
+        return totalCount > 1 ? totalCount + 2 : totalCount
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Banner", for: indexPath) as! AABannerCell
         cell.imageView.contentMode = self.bannerImageViewContentMode
-        if imagesNameStringGroup.count > 0 {
-            cell.imageView.image = UIImage.init(named: imagesNameStringGroup[indexPath.item])
+        var index = indexPath.item
+        if index == 0 {
+            index = totalCount - 1
+        } else if index == totalCount + 1 {
+            index = 0
         } else {
-            cell.imageView.kf.setImage(with: URL.init(string: imagesUrlStringGroup[indexPath.item]), placeholder: placeHolderImage)
+            index -= 1
+        }
+        if imagesNameStringGroup.count > 0 {
+            cell.imageView.image = UIImage.init(named: imagesNameStringGroup[index])
+        } else {
+            cell.imageView.kf.setImage(with: URL.init(string: imagesUrlStringGroup[index]), placeholder: placeHolderImage)
         }
         return cell
         
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.cycleScrollView?(self, didSelected: indexPath.item)
+        delegate?.cycleScrollView?(self, didSelected: indexPath.item - 1)
     }
     
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -165,7 +196,25 @@ extension AACycleScrollView: UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        pageControl.currentPage = currentIndex()
+        scrollViewDidEndScrollingAnimation(scrollView)
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+    }
+    
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        let page = currentIndex()
+        if page == 0 {
+            mainView.scrollToItem(at: IndexPath.init(item: totalCount, section: 0), at: .left, animated: false)
+            pageControl.currentPage = totalCount - 1
+            return
+        } else if page == totalCount + 1 {
+            mainView.scrollToItem(at: IndexPath.init(item: 1, section: 0), at: .left, animated: false)
+            pageControl.currentPage = 0
+            return
+        }
+        pageControl.currentPage = page - 1
     }
     
 }

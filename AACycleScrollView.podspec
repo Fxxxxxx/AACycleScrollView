@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name         = "AACycleScrollView"
-s.version      = "1.0"
+s.version      = "1.1.0"
 s.summary      = "iOS 自动轮播图"
 
 s.homepage     = "https://github.com/Fxxxxxx/AACycleScrollView"
@@ -11,7 +11,7 @@ s.license      = { :type => "MIT", :file => "LICENSE" }
 
 s.authors            = { "Aaron Feng" => "e2shao1993@163.com" }
 
-s.swift_version = "4.2"
+s.swift_version = "5"
 
 s.ios.deployment_target = "8.0"
 

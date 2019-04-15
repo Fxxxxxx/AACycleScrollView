@@ -11,7 +11,6 @@
 2. Cocoapods   ```pod  'AACycleScrollView' ```
 
 - 使用方式：
-显示：
 ```
 let aaCycle = AACycleScrollView.init(frame: CGRect.init(x: 0, y: 80, width: kScreenW, height: 200))
 aaCycle.imagesUrlStringGroup = []            //网络图片

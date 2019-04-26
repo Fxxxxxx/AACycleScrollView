@@ -6,7 +6,7 @@
 ![Apr-15-2019 16-29-41.gif](https://upload-images.jianshu.io/upload_images/3569202-7ed31238266a5f68.gif?imageMogr2/auto-orient/strip)
 
 - 最新更新：
-   1. 支持横向、纵向滑动
+1. 支持横向、纵向滑动
 ```
 aaCycle.scrollDirection = .vertical
 ```

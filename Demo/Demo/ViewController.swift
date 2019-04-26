@@ -41,7 +41,7 @@ class ViewController: UIViewController {
 
 extension ViewController: AACycleScrollViewDelegate {
     
-    func customCellClassFor(cycleScrollView: AACycleScrollView) -> AnyClass {
+    func customCellClassFor(cycleScrollView: AACycleScrollView) -> UICollectionViewCell.Type {
         return CustomCell.self
     }
     

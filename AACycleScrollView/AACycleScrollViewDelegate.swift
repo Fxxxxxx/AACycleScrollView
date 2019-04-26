@@ -16,7 +16,7 @@ import UIKit
     @objc optional func cycleScrollView(_: AACycleScrollView, scrollTo index: Int)
     
     //使用自定义的cell  class or nib
-    @objc optional func customCellClassFor(cycleScrollView: AACycleScrollView) -> AnyClass
+    @objc optional func customCellClassFor(cycleScrollView: AACycleScrollView) -> UICollectionViewCell.Type
     @objc optional func customCellNibFor(cycleScrollView: AACycleScrollView) -> UINib
     //设置自定义的cell
     @objc optional func setCustomCell(cycleScrollView: AACycleScrollView, customCell: UICollectionViewCell, index: Int)

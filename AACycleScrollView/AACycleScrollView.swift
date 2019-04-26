@@ -152,10 +152,10 @@ public class AACycleScrollView: UIView {
         }
         mainView.isScrollEnabled = true
         pageControl.isHidden = false
-        setTimer()
         pageControl.numberOfPages = totalCount
-        mainView.scrollToItem(at: IndexPath.init(item: 1, section: 0), at: position, animated: false)
         pageControl.currentPage = 0
+        mainView.scrollToItem(at: IndexPath.init(item: 1, section: 0), at: position, animated: false)
+        setTimer()
         
     }
     
@@ -201,11 +201,12 @@ extension AACycleScrollView: UICollectionViewDataSource, UICollectionViewDelegat
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         var index = indexPath.item
-        if index == 0 {
+        switch index {
+        case 0:
             index = totalCount - 1
-        } else if index == totalCount + 1 {
+        case totalCount + 1:
             index = 0
-        } else {
+        default:
             index -= 1
         }
         
@@ -227,7 +228,16 @@ extension AACycleScrollView: UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.cycleScrollView?(self, didSelected: indexPath.item - 1)
+        var index = indexPath.item
+        switch index {
+        case 0:
+            index = totalCount - 1
+        case totalCount + 1:
+            index = 0
+        default:
+            index -= 1
+        }
+        delegate?.cycleScrollView?(self, didSelected: index)
     }
     
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

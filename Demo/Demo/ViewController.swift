@@ -27,13 +27,15 @@ class ViewController: UIViewController {
         //使用自定义cell
         aaCycle.cycleType = .custom
         aaCycle.numberOfCustomCells = 6
-        aaCycle.pageControlOffset = UIOffset.init(horizontal: kScreenW / 2 - 50, vertical: 0)
+//        aaCycle.pageControlOffset = UIOffset.init(horizontal: kScreenW / 2 - 50, vertical: 0)
         aaCycle.pageControl.currentPageIndicatorTintColor = .black
         aaCycle.pageControl.pageIndicatorTintColor = .green
         aaCycle.autoScrollTimeInterval = 2
         view.addSubview(aaCycle)
         
         aaCycle.scrollDirection = .vertical
+        aaCycle.pageControl.center = .init(x: kScreenW - 15, y: 100)
+        aaCycle.pageControl.transform = CGAffineTransform.init(rotationAngle: CGFloat.pi / 2)
         
     }
 
@@ -48,7 +50,7 @@ extension ViewController: AACycleScrollViewDelegate {
     func setCustomCell(cycleScrollView: AACycleScrollView, customCell: UICollectionViewCell, index: Int) {
         let cell = customCell as! CustomCell
         cell.label.text = "custom Set at \(index):\(cell.label)"
-        cell.label.textColor = .green
+        cell.label.textColor = .orange
     }
     
     func cycleScrollView(_: AACycleScrollView, didSelected index: Int) {

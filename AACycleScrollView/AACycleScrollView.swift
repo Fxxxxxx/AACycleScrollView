@@ -11,15 +11,22 @@ import Kingfisher
 
 public class AACycleScrollView: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    public enum AACycleType {
+        case image
+        case custom
     }
-    */
     
-    public weak var delegate: AACycleScrollViewDelegate?
+    public var cycleType: AACycleType = .image
+    
+    public weak var delegate: AACycleScrollViewDelegate? {
+        didSet {
+            if let cellClass = delegate?.customCellClassFor?(cycleScrollView: self) {
+                mainView.register(cellClass, forCellWithReuseIdentifier: cellId_Custom)
+            } else {
+                mainView.register(delegate?.customCellNibFor?(cycleScrollView: self), forCellWithReuseIdentifier: cellId_Custom)
+            }
+        }
+    }
     public var imagesUrlStringGroup = [String]() {
         didSet {
             reloadData()
@@ -30,6 +37,12 @@ public class AACycleScrollView: UIView {
             reloadData()
         }
     }
+    public var numberOfCustomCells: Int = 0 {
+        didSet {
+            reloadData()
+        }
+    }
+    
     private var totalCount = 0
     public let pageControl = UIPageControl()
     public var pageControlOffset : UIOffset? {
@@ -41,9 +54,19 @@ public class AACycleScrollView: UIView {
     public var bannerImageViewContentMode = ContentMode.scaleAspectFill
     public var placeHolderImage: UIImage?
     public var autoScrollTimeInterval: TimeInterval = 2.0
+    public var scrollDirection = UICollectionView.ScrollDirection.horizontal {
+        didSet {
+            layout.scrollDirection = scrollDirection
+            position = scrollDirection == .horizontal ? .left : .top
+        }
+    }
+    private var position = UICollectionView.ScrollPosition.left
     private let layout = UICollectionViewFlowLayout()
     private var timer: Timer?
     private var mainView: UICollectionView!
+    
+    private let cellId_Image = "CELL_IMAGE"
+    private let cellId_Custom = "CELL_CUSTOM"
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -71,24 +94,25 @@ public class AACycleScrollView: UIView {
         layout.itemSize = self.bounds.size
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        layout.scrollDirection = .horizontal
+        layout.scrollDirection = scrollDirection
         mainView = UICollectionView.init(frame: self.bounds, collectionViewLayout: layout)
         mainView.dataSource = self
         mainView.delegate = self
         mainView.isPagingEnabled = true
         mainView.backgroundColor = .white
-        mainView.register(AABannerCell.self, forCellWithReuseIdentifier: "Banner")
         mainView.showsVerticalScrollIndicator = false
         mainView.showsHorizontalScrollIndicator = false
         self.addSubview(mainView)
+        mainView.register(AABannerCell.self, forCellWithReuseIdentifier: cellId_Image)
         
-        pageControl.currentPage = 0
-        pageControl.numberOfPages = imagesNameStringGroup.count > 0 ? imagesNameStringGroup.count : imagesUrlStringGroup.count
+        pageControl.frame = CGRect.init(x: 0, y: self.bounds.height - 30, width: self.bounds.width, height: 30)
+        if let offset = pageControlOffset {
+            pageControl.frame.origin.x += offset.horizontal
+            pageControl.frame.origin.y += offset.vertical
+        }
         self.addSubview(pageControl)
-        pageControl.sizeToFit()
-        pageControl.center = CGPoint.init(x: self.bounds.width / 2, y: self.bounds.height - 15)
         
-        setTimer()
+        reloadData()
         
         NotificationCenter.default.addObserver(self, selector: #selector(invalidateTimer), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setTimer), name: UIApplication.didBecomeActiveNotification, object: self)
@@ -97,6 +121,11 @@ public class AACycleScrollView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    public override func layoutSubviews() {
+        mainView.frame = self.bounds
+        layout.itemSize = self.bounds.size
     }
     
     public override func removeFromSuperview() {
@@ -109,8 +138,12 @@ public class AACycleScrollView: UIView {
     
     public func reloadData() {
         
+        if cycleType == .image {
+            totalCount = imagesNameStringGroup.count > 0 ? imagesNameStringGroup.count : imagesUrlStringGroup.count
+        } else {
+            totalCount = numberOfCustomCells
+        }
         mainView.reloadData()
-        totalCount = imagesNameStringGroup.count > 0 ? imagesNameStringGroup.count : imagesUrlStringGroup.count
         guard totalCount > 1 else {
             mainView.isScrollEnabled = false
             pageControl.isHidden = true
@@ -121,7 +154,7 @@ public class AACycleScrollView: UIView {
         pageControl.isHidden = false
         setTimer()
         pageControl.numberOfPages = totalCount
-        mainView.scrollToItem(at: IndexPath.init(item: 1, section: 0), at: .left, animated: false)
+        mainView.scrollToItem(at: IndexPath.init(item: 1, section: 0), at: position, animated: false)
         pageControl.currentPage = 0
         
     }
@@ -134,13 +167,16 @@ public class AACycleScrollView: UIView {
         }
         var nextIndex = currentIndex() + 1
         nextIndex %= total
-        mainView.scrollToItem(at: IndexPath.init(item: nextIndex, section: 0), at: .left, animated: true)
+        mainView.scrollToItem(at: IndexPath.init(item: nextIndex, section: 0), at: position, animated: true)
         
     }
     
     private func currentIndex() -> Int {
         
-        return Int(mainView.contentOffset.x / self.bounds.size.width + 0.3)
+        if scrollDirection == .horizontal {
+            return Int(mainView.contentOffset.x / self.bounds.width + 0.3)
+        }
+        return Int(mainView.contentOffset.y / self.bounds.height + 0.3)
         
     }
     
@@ -164,8 +200,6 @@ extension AACycleScrollView: UICollectionViewDataSource, UICollectionViewDelegat
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Banner", for: indexPath) as! AABannerCell
-        cell.imageView.contentMode = self.bannerImageViewContentMode
         var index = indexPath.item
         if index == 0 {
             index = totalCount - 1
@@ -174,12 +208,21 @@ extension AACycleScrollView: UICollectionViewDataSource, UICollectionViewDelegat
         } else {
             index -= 1
         }
-        if imagesNameStringGroup.count > 0 {
-            cell.imageView.image = UIImage.init(named: imagesNameStringGroup[index])
-        } else {
-            cell.imageView.kf.setImage(with: URL.init(string: imagesUrlStringGroup[index]), placeholder: placeHolderImage)
+        
+        guard cycleType != .custom else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId_Custom, for: indexPath)
+            delegate?.setCustomCell?(cycleScrollView: self, customCell: cell, index: index)
+            return cell
         }
-        return cell
+        
+        let bannerCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId_Image, for: indexPath) as! AABannerCell
+        bannerCell.imageView.contentMode = self.bannerImageViewContentMode
+        if imagesNameStringGroup.count > 0 {
+            bannerCell.imageView.image = UIImage.init(named: imagesNameStringGroup[index])
+        } else {
+            bannerCell.imageView.kf.setImage(with: URL.init(string: imagesUrlStringGroup[index]), placeholder: placeHolderImage)
+        }
+        return bannerCell
         
     }
     
@@ -205,16 +248,17 @@ extension AACycleScrollView: UICollectionViewDataSource, UICollectionViewDelegat
     
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         let page = currentIndex()
-        if page == 0 {
-            mainView.scrollToItem(at: IndexPath.init(item: totalCount, section: 0), at: .left, animated: false)
+        switch page {
+        case 0:
+            mainView.scrollToItem(at: IndexPath.init(item: totalCount, section: 0), at: position, animated: false)
             pageControl.currentPage = totalCount - 1
-            return
-        } else if page == totalCount + 1 {
-            mainView.scrollToItem(at: IndexPath.init(item: 1, section: 0), at: .left, animated: false)
+        case totalCount + 1:
+            mainView.scrollToItem(at: IndexPath.init(item: 1, section: 0), at: position, animated: false)
             pageControl.currentPage = 0
-            return
+        default:
+            pageControl.currentPage = page - 1
         }
-        pageControl.currentPage = page - 1
+        self.delegate?.cycleScrollView?(self, scrollTo: pageControl.currentPage)
     }
     
 }

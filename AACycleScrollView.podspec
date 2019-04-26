@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name         = "AACycleScrollView"
-s.version      = "1.1.0"
+s.version      = "1.2.0"
 s.summary      = "iOS 自动轮播图"
 
 s.homepage     = "https://github.com/Fxxxxxx/AACycleScrollView"

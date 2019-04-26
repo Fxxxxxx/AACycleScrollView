@@ -5,6 +5,17 @@
 
 ![Apr-15-2019 16-29-41.gif](https://upload-images.jianshu.io/upload_images/3569202-7ed31238266a5f68.gif?imageMogr2/auto-orient/strip)
 
+- 最新更新：
+   1. 支持横向、纵向滑动
+```
+aaCycle.scrollDirection = .vertical
+```
+   2. 支持自定义轮播样式(代理方法返回自定义类或者nib)
+```
+aaCycle.cycleType = .custom
+aaCycle.numberOfCustomCells = 6
+```
+
 
 - 集成方式：
 1. 项目原地址下载后，把AACycleScrollView文件夹拖入项目

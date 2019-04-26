@@ -7,9 +7,17 @@
 //
 
 import Foundation
+import UIKit
 
 @objc public protocol AACycleScrollViewDelegate {
+    //点击回调
+    @objc optional func cycleScrollView(_: AACycleScrollView, didSelected index: Int)
+    //当前展示的序号
+    @objc optional func cycleScrollView(_: AACycleScrollView, scrollTo index: Int)
     
-    @objc optional func cycleScrollView(_: AACycleScrollView, didSelected: Int) -> Void
-    
+    //使用自定义的cell  class or nib
+    @objc optional func customCellClassFor(cycleScrollView: AACycleScrollView) -> AnyClass
+    @objc optional func customCellNibFor(cycleScrollView: AACycleScrollView) -> UINib
+    //设置自定义的cell
+    @objc optional func setCustomCell(cycleScrollView: AACycleScrollView, customCell: UICollectionViewCell, index: Int)
 }

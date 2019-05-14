@@ -153,8 +153,7 @@ public class AACycleScrollView: UIView {
         mainView.isScrollEnabled = true
         pageControl.isHidden = false
         pageControl.numberOfPages = totalCount
-        pageControl.currentPage = 0
-        mainView.scrollToItem(at: IndexPath.init(item: 1, section: 0), at: position, animated: false)
+        pageControl.currentPage = totalCount - 1
         setTimer()
         
     }

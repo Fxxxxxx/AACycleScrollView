@@ -20,7 +20,8 @@ class AABannerCell: UICollectionViewCell {
         
         super.init(frame: frame)
         imageView = UIImageView.init(frame: self.bounds)
-        self.contentView.addSubview(imageView)
+        contentView.addSubview(imageView)
+        contentView.clipsToBounds = true
         
     }
     

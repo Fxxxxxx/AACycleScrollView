@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import SnapKit
 let kScreenW = UIScreen.main.bounds.width
 
 class ViewController: UIViewController {
 
+    let arr = Array.init(repeating: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1565428872&di=a221ece51a9c6f3c919e2d6153e3ec1b&src=http://science.china.com.cn/images/attachement/jpg/site555/20150731/e89a8ffb139317251fea42.jpg", count: 5)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -19,38 +22,48 @@ class ViewController: UIViewController {
     
     func setCycleView() {
         
-        let aaCycle = AACycleScrollView.init(frame: CGRect.init(x: 0, y: 80, width: kScreenW, height: 200))
+        let aaCycle = AACycleScrollView.init(frame: .zero)
+        view.addSubview(aaCycle)
+        aaCycle.snp.makeConstraints { (maker) in
+            maker.top.equalToSuperview().offset(50)
+            maker.left.right.equalToSuperview()
+            maker.height.equalTo(200)
+        }
         aaCycle.delegate = self
-        //默认使用图片数组
-//        aaCycle.imagesUrlStringGroup = Array.init(repeating: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555302881669&di=8e62c103a951f6d5df1f1ef9b7d7dcf3&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2Fd788d43f8794a4c240e9466f0ef41bd5ac6e39af.jpg", count: 5)
+        aaCycle.dataSource = self
         
         //使用自定义cell
-        aaCycle.cycleType = .custom
-        aaCycle.numberOfCustomCells = 6
-//        aaCycle.pageControlOffset = UIOffset.init(horizontal: kScreenW / 2 - 50, vertical: 0)
         aaCycle.pageControl.currentPageIndicatorTintColor = .black
         aaCycle.pageControl.pageIndicatorTintColor = .green
         aaCycle.autoScrollTimeInterval = 2
-        view.addSubview(aaCycle)
         
-        aaCycle.scrollDirection = .vertical
-        aaCycle.pageControl.center = .init(x: kScreenW - 15, y: 100)
-        aaCycle.pageControl.transform = CGAffineTransform.init(rotationAngle: CGFloat.pi / 2)
+        aaCycle.scrollDirection = .horizontal
+//        aaCycle.pageControl.center = .init(x: kScreenW - 15, y: 100)
+//        aaCycle.pageControl.transform = CGAffineTransform.init(rotationAngle: CGFloat.pi / 2)
         
     }
 
 }
 
-extension ViewController: AACycleScrollViewDelegate {
+extension ViewController: AACycleScrollViewDelegate, AACycleScrollViewDataSource {
     
-    func customCellClassFor(cycleScrollView: AACycleScrollView) -> UICollectionViewCell.Type {
-        return CustomCell.self
+    func customCellClass(_ cycleView: AACycleScrollView) -> UICollectionViewCell.Type? {
+//        return CustomCell.self
+        return nil
     }
     
-    func setCustomCell(cycleScrollView: AACycleScrollView, customCell: UICollectionViewCell, index: Int) {
-        let cell = customCell as! CustomCell
+    func setCustomCell(_ cell: UICollectionViewCell, in index: Int, with cycleView: AACycleScrollView) {
+        let cell = cell as! CustomCell
         cell.label.text = "custom Set at \(index):\(cell.label)"
         cell.label.textColor = .orange
+    }
+    
+    func numbersOfItems(_ cycleView: AACycleScrollView) -> Int {
+        return arr.count
+    }
+    
+    func imageUrlStringForItem(in index: Int, with cycleView: AACycleScrollView) -> String? {
+        return arr[index]
     }
     
     func cycleScrollView(_: AACycleScrollView, didSelected index: Int) {
@@ -71,6 +84,7 @@ class CustomCell: UICollectionViewCell {
         super.init(frame: frame)
         label.frame = frame
         label.textColor = .red
+        label.backgroundColor = .white
         label.font = .boldSystemFont(ofSize: 24)
         label.text = .init(describing: self)
         label.numberOfLines = 0

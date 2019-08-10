@@ -3,22 +3,27 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3049E66722FEBE6A001818B1 /* AACycleScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3049E66422FEBE69001818B1 /* AACycleScrollView.swift */; };
+		3049E66822FEBE6A001818B1 /* AACycleScrollViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3049E66522FEBE69001818B1 /* AACycleScrollViewProtocol.swift */; };
+		3049E66922FEBE6A001818B1 /* AABannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3049E66622FEBE6A001818B1 /* AABannerCell.swift */; };
+		3049E66D22FED0DB001818B1 /* AABannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3049E66B22FED0DB001818B1 /* AABannerCell.xib */; };
 		5074046EA77BFC63AF942DB1 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882C5FDBFA7CEFB760372A23 /* Pods_Demo.framework */; };
 		93BDC3C92264163E00F654F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BDC3C82264163E00F654F6 /* AppDelegate.swift */; };
 		93BDC3CB2264163E00F654F6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BDC3CA2264163E00F654F6 /* ViewController.swift */; };
 		93BDC3CE2264163E00F654F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93BDC3CC2264163E00F654F6 /* Main.storyboard */; };
 		93BDC3D02264163F00F654F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93BDC3CF2264163F00F654F6 /* Assets.xcassets */; };
 		93BDC3D32264163F00F654F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93BDC3D12264163F00F654F6 /* LaunchScreen.storyboard */; };
-		93BDC3DE226416AC00F654F6 /* AACycleScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BDC3DB226416AC00F654F6 /* AACycleScrollView.swift */; };
-		93BDC3DF226416AC00F654F6 /* AACycleScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BDC3DC226416AC00F654F6 /* AACycleScrollViewDelegate.swift */; };
-		93BDC3E0226416AC00F654F6 /* AABannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BDC3DD226416AC00F654F6 /* AABannerCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3049E66422FEBE69001818B1 /* AACycleScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AACycleScrollView.swift; sourceTree = "<group>"; };
+		3049E66522FEBE69001818B1 /* AACycleScrollViewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AACycleScrollViewProtocol.swift; sourceTree = "<group>"; };
+		3049E66622FEBE6A001818B1 /* AABannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AABannerCell.swift; sourceTree = "<group>"; };
+		3049E66B22FED0DB001818B1 /* AABannerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AABannerCell.xib; sourceTree = "<group>"; };
 		6C0F31614FB6E857C2524B39 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		882C5FDBFA7CEFB760372A23 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93BDC3C52264163E00F654F6 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -28,9 +33,6 @@
 		93BDC3CF2264163F00F654F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		93BDC3D22264163F00F654F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		93BDC3D42264163F00F654F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		93BDC3DB226416AC00F654F6 /* AACycleScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AACycleScrollView.swift; sourceTree = "<group>"; };
-		93BDC3DC226416AC00F654F6 /* AACycleScrollViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AACycleScrollViewDelegate.swift; sourceTree = "<group>"; };
-		93BDC3DD226416AC00F654F6 /* AABannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AABannerCell.swift; sourceTree = "<group>"; };
 		B0F66DD1E5F9394A318EC9BD /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -60,7 +62,6 @@
 				6C0F31614FB6E857C2524B39 /* Pods-Demo.debug.xcconfig */,
 				B0F66DD1E5F9394A318EC9BD /* Pods-Demo.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -99,9 +100,10 @@
 		93BDC3DA226416AC00F654F6 /* AACycleScrollView */ = {
 			isa = PBXGroup;
 			children = (
-				93BDC3DB226416AC00F654F6 /* AACycleScrollView.swift */,
-				93BDC3DC226416AC00F654F6 /* AACycleScrollViewDelegate.swift */,
-				93BDC3DD226416AC00F654F6 /* AABannerCell.swift */,
+				3049E66622FEBE6A001818B1 /* AABannerCell.swift */,
+				3049E66B22FED0DB001818B1 /* AABannerCell.xib */,
+				3049E66422FEBE69001818B1 /* AACycleScrollView.swift */,
+				3049E66522FEBE69001818B1 /* AACycleScrollViewProtocol.swift */,
 			);
 			name = AACycleScrollView;
 			path = ../../AACycleScrollView;
@@ -168,6 +170,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93BDC3D32264163F00F654F6 /* LaunchScreen.storyboard in Resources */,
+				3049E66D22FED0DB001818B1 /* AABannerCell.xib in Resources */,
 				93BDC3D02264163F00F654F6 /* Assets.xcassets in Resources */,
 				93BDC3CE2264163E00F654F6 /* Main.storyboard in Resources */,
 			);
@@ -222,10 +225,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3049E66822FEBE6A001818B1 /* AACycleScrollViewProtocol.swift in Sources */,
+				3049E66922FEBE6A001818B1 /* AABannerCell.swift in Sources */,
 				93BDC3CB2264163E00F654F6 /* ViewController.swift in Sources */,
-				93BDC3E0226416AC00F654F6 /* AABannerCell.swift in Sources */,
-				93BDC3DF226416AC00F654F6 /* AACycleScrollViewDelegate.swift in Sources */,
-				93BDC3DE226416AC00F654F6 /* AACycleScrollView.swift in Sources */,
+				3049E66722FEBE6A001818B1 /* AACycleScrollView.swift in Sources */,
 				93BDC3C92264163E00F654F6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

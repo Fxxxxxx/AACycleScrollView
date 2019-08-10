@@ -10,19 +10,11 @@ import UIKit
 
 class AABannerCell: UICollectionViewCell {
     
-    var imageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView!
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override init(frame: CGRect) {
-        
-        super.init(frame: frame)
-        imageView = UIImageView.init(frame: self.bounds)
-        contentView.addSubview(imageView)
-        contentView.clipsToBounds = true
-        
+    static func nib() -> UINib {
+        let bundle = Bundle.init(for: classForCoder())
+        return UINib.init(nibName: .init(describing: classForCoder()), bundle: bundle)
     }
     
 }

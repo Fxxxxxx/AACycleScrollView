@@ -37,7 +37,7 @@ public class AACycleScrollView: UIView {
         }
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         mainView = UICollectionView.init(frame: frame, collectionViewLayout: layout)
         mainView.backgroundColor = .white

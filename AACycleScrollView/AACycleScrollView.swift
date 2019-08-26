@@ -25,6 +25,7 @@ public class AACycleScrollView: UIView {
     private var totalCount = 0
     //此版本的UIPageControl完全开放出来由用户自行调节，可以使用约束或者frame随意调节位置，可以随意自行设置属性， 默认放在下方居中显示
     public let pageControl = UIPageControl()
+    public var hiddenPageControl = false
     
     public var bannerImageViewContentMode = ContentMode.scaleAspectFill
     public var placeHolderImage: UIImage?
@@ -83,7 +84,11 @@ public class AACycleScrollView: UIView {
         totalCount = dataSource?.numbersOfItems(self) ?? 0
         mainView.reloadData()
         pageControl.numberOfPages = totalCount
-        pageControl.isHidden = totalCount < 2
+        if hiddenPageControl {
+            pageControl.isHidden = true
+        } else {
+            pageControl.isHidden = totalCount < 2
+        }
         if totalCount > 1 {
             scrollViewDidEndScrollingAnimation(mainView)
             setTimer()

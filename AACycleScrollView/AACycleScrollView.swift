@@ -50,6 +50,7 @@ public class AACycleScrollView: UIView {
         mainView.showsHorizontalScrollIndicator = false
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
+        layout.scrollDirection = scrollDirection
         
         pageControl.frame = .init(x: 0, y: frame.height - 30, width: frame.width, height: 30)
         self.addSubview(pageControl)

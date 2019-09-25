@@ -86,8 +86,8 @@ public class AACycleScrollView: UIView {
     deinit {
         NotificationCenter.default.removeObserver(self)
         invalidateTimer()
-        dataSource = nil
-        delegate = nil
+        mainView.dataSource = nil
+        mainView.delegate = nil
     }
     
     public func reload() {

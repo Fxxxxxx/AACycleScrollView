@@ -40,6 +40,19 @@ public class AACycleScrollView: UIView {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        setup()
+    }
+    
+    public override func awakeFromNib() {
+        super.awakeFromNib()
+        setup()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setup() {
         mainView = UICollectionView.init(frame: frame, collectionViewLayout: layout)
         mainView.backgroundColor = .white
         self.addSubview(mainView)
@@ -57,10 +70,6 @@ public class AACycleScrollView: UIView {
         
         NotificationCenter.default.addObserver(self, selector: #selector(invalidateTimer), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setTimer), name: UIApplication.didBecomeActiveNotification, object: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     public override func layoutSubviews() {

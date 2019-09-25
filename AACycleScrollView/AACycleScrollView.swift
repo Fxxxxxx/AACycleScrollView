@@ -61,14 +61,20 @@ public class AACycleScrollView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func didMoveToSuperview() {
-        reload()
-    }
-    
     public override func layoutSubviews() {
         mainView.frame = self.bounds
         layout.itemSize = self.bounds.size
         pageControl.frame = .init(x: 0, y: frame.height - 30, width: frame.width, height: 30)
+    }
+    
+    public override func willMove(toSuperview newSuperview: UIView?) {
+        if newSuperview == nil {
+            invalidateTimer()
+        }
+    }
+    
+    public override func didMoveToSuperview() {
+        reload()
     }
     
     public override func removeFromSuperview() {
@@ -77,6 +83,9 @@ public class AACycleScrollView: UIView {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+        invalidateTimer()
+        dataSource = nil
+        delegate = nil
     }
     
     public func reload() {

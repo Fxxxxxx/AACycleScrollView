@@ -23,7 +23,7 @@ public protocol AACycleScrollViewDataSource: AnyObject {
     func setCustomCell(_ cell: UICollectionViewCell, in index: Int, with cycleView: AACycleScrollView)
 }
 
-extension AACycleScrollViewDataSource {
+public extension AACycleScrollViewDataSource {
     func numbersOfItems(_ cycleView: AACycleScrollView) -> Int {
         return 0
     }
@@ -49,7 +49,7 @@ public protocol AACycleScrollViewDelegate: AnyObject {
     func cycleScrollView(_: AACycleScrollView, scrollTo index: Int)
 }
 
-extension AACycleScrollViewDelegate {
+public extension AACycleScrollViewDelegate {
     func cycleScrollView(_: AACycleScrollView, didSelected index: Int) {}
     func cycleScrollView(_: AACycleScrollView, scrollTo index: Int) {}
 }

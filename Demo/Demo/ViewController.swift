@@ -20,6 +20,10 @@ class ViewController: UIViewController {
         setCycleView()
     }
     
+    deinit {
+        print("viewcontroller deinit")
+    }
+    
     func setCycleView() {
         
         let aaCycle = AACycleScrollView.init(frame: .zero)
@@ -68,12 +72,26 @@ extension ViewController: AACycleScrollViewDelegate, AACycleScrollViewDataSource
     
     func cycleScrollView(_: AACycleScrollView, didSelected index: Int) {
         print("tap at: \(index)")
+        if self.presentingViewController != nil {
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            let vc = storyboard?.instantiateInitialViewController()
+            self.present(vc!, animated: true, completion: nil)
+        }
     }
     
     func cycleScrollView(_: AACycleScrollView, scrollTo index: Int) {
         print("scroll to: \(index)")
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if self.presentingViewController != nil {
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            let vc = storyboard?.instantiateInitialViewController()
+            self.present(vc!, animated: true, completion: nil)
+        }
+    }
 }
 
 class CustomCell: UICollectionViewCell {

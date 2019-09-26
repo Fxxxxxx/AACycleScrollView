@@ -78,25 +78,18 @@ public class AACycleScrollView: UIView {
         pageControl.frame = .init(x: 0, y: frame.height - 30, width: frame.width, height: 30)
     }
     
-    public override func willMove(toSuperview newSuperview: UIView?) {
-        if newSuperview == nil {
-            invalidateTimer()
-        }
-    }
-    
     public override func didMoveToSuperview() {
         reload()
     }
     
     public override func removeFromSuperview() {
         invalidateTimer()
+        mainView.removeFromSuperview()
     }
     
     deinit {
+        print("AACycleScroll deinit")
         NotificationCenter.default.removeObserver(self)
-        invalidateTimer()
-        mainView.dataSource = nil
-        mainView.delegate = nil
     }
     
     public func reload() {
@@ -127,13 +120,13 @@ public class AACycleScrollView: UIView {
     }
     
     private func currentIndex() -> Int {
-        guard bounds != .zero else {
+        guard frame.width > 0 && frame.height > 0 else {
             return 0
         }
         if scrollDirection == .horizontal {
-            return Int(mainView.contentOffset.x / bounds.width + 0.3)
+            return Int(mainView.contentOffset.x / layout.itemSize.width + 0.3)
         }
-        return Int(mainView.contentOffset.y / bounds.height + 0.3)
+        return Int(mainView.contentOffset.y / layout.itemSize.height + 0.3)
     }
     
     @objc func invalidateTimer() {
@@ -144,6 +137,7 @@ public class AACycleScrollView: UIView {
     @objc func setTimer() {
         invalidateTimer()
         timer = Timer.scheduledTimer(timeInterval: autoScrollTimeInterval, target: self, selector: #selector(autoScroll), userInfo: nil, repeats: true)
+        RunLoop.main.add(timer!, forMode: .common)
     }
     
     private func registerCell() {
@@ -163,7 +157,6 @@ public class AACycleScrollView: UIView {
         mainView.register(AABannerCell.nib(), forCellWithReuseIdentifier: CELLID)
         reload()
     }
-    
 }
 
 extension AACycleScrollView: UICollectionViewDataSource, UICollectionViewDelegate {

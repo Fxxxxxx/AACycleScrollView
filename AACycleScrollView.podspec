@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name         = "AACycleScrollView"
-s.version      = "2.0.5"
+s.version      = "2.0.6"
 s.summary      = "iOS 自动轮播图"
 
 s.homepage     = "https://github.com/Fxxxxxx/AACycleScrollView"
@@ -17,7 +17,7 @@ s.ios.deployment_target = "8.0"
 
 s.source       = { :git => "https://github.com/Fxxxxxx/AACycleScrollView.git", :tag => s.version }
 
-s.source_files  = "AACycleScrollView/*.swift"
+s.source_files  = "AACycleScrollView/*"
 
 s.requires_arc = true
 s.framework = "UIKit"
